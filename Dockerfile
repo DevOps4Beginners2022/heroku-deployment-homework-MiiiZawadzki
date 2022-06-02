@@ -7,13 +7,16 @@ ENV USER=mobydick
 ENV GROUP=app_users
 ENV GROUP_ID=1000
 ENV HOME $PROJECT_DIR
-
+ENV PORT=8000
 WORKDIR $HOME
 
-COPY go.mod go.sum main.go $HOME
+COPY go.mod .
+COPY go.sum .
+COPY main.go .
+
 RUN go mod download
 RUN go build -o app-server
 
 EXPOSE $PORT
 
-CMD go run .
+CMD go run main.go
