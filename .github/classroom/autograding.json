@@ -1,0 +1,54 @@
+{
+  "tests": [
+    {
+      "name": "Verify dockerfile",
+      "setup": "docker build --build-arg PORT=8090 -t daftacademy-example-app . && docker run -d -p 8090:8090 daftacademy-example-app",
+      "run": "curl -s localhost:8090 | grep -q \"Hello DaftAcademy\";",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 2
+    },
+    {
+      "name": "Verify heroku.yml",
+      "setup": "wget -q https://github.com/mikefarah/yq/releases/download/v4.25.2/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq",
+      "run": "cat heroku.yml | /usr/bin/yq '.setup.addons[0].plan' | grep -q \"heroku-postgresql\" && cat heroku.yml | /usr/bin/yq '.build.docker.web' | grep -q \"Dockerfile\"",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 2
+    },
+    {
+      "name": "Verify heroku deployment",
+      "setup": "",
+      "run": "curl -s $(cat hostname.txt) | grep -q \"Hello DaftAcademy\"",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 2
+    },
+    {
+      "name": "Verify db connection",
+      "setup": "",
+      "run": "curl -sL $(cat hostname.txt)/db  | grep -q \"Database is ready\"",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 2
+    },
+    {
+      "name": "Verify secret value",
+      "setup": "",
+      "run": "curl -sL $(cat hostname.txt)/secret  | grep -q \"d4f74c4d3my\"",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 2
+    }
+  ]
+}
